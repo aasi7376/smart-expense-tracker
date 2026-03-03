@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transactions — Smart Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/transactions.css" />
+</head>
+<body>
+
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">💰</div>
+        <div class="sidebar-logo-text">
+          Smart Expense
+          <span>Tracker</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a href="transactions.html" class="nav-item active">
+          <span class="nav-icon">💳</span> Transactions
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-details">
+            <div class="user-name"  id="userName">User</div>
+            <div class="user-email" id="userEmail">user@email.com</div>
+          </div>
+          <button class="btn-theme"  onclick="toggleTheme()" title="Toggle Theme">☀️</button>
+          <button class="btn-logout" onclick="handleLogout()" title="Logout">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Page Header -->
+      <div class="transactions-header">
+        <div>
+          <h1 class="page-title">Transactions</h1>
+          <p class="page-subtitle">Manage your income and expenses</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn-add" onclick="handleExportCSV()">📥 Export CSV</button>
+          <button class="btn-add" onclick="handleExportPDF()" style="background:var(--expense);">📄 Export PDF</button>
+          <button class="btn-add" onclick="openModal()">＋ Add Transaction</button>
+        </div>
+      </div>
+
+      <!-- Search + Filters -->
+      <div class="filters-bar">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search transactions..."
+            oninput="handleSearch()"
+          />
+        </div>
+        <div class="filter-group">
+          <label>Month</label>
+          <input type="month" id="filterMonth" />
+        </div>
+        <div class="filter-group">
+          <label>Type</label>
+          <select id="filterType">
+            <option value="">All Types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Category</label>
+          <select id="filterCategory">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <button class="btn-filter" onclick="applyFilters()">Filter</button>
+        <button class="btn-reset"  onclick="resetFilters()">Reset</button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transactionTableBody">
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No transactions found</h3>
+                    <p>Add your first transaction to get started</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="pagination-info" id="paginationInfo">Showing 0 results</div>
+          <div class="pagination-btns">
+            <button class="btn-page" id="prevBtn" onclick="changePage(-1)" disabled>← Prev</button>
+            <button class="btn-page" id="nextBtn" onclick="changePage(1)"  disabled>Next →</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Add Transaction</div>
+        <button class="btn-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="alert alert-error" id="modalAlert"></div>
+
+      <div class="modal-grid">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="txType" onchange="loadCategories()">
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" id="txAmount" placeholder="0.00" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <div class="modal-grid">
+        <div class="form-group">
+          <label>Category</label>
+          <select id="txCategory"></select>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="txDate" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="txDescription" placeholder="Optional note..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-save"   onclick="saveTransaction()" id="saveBtn">Save</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/transactions.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Smart Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">💰</div>
+        <div class="sidebar-logo-text">
+          Smart Expense
+          <span>Tracker</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item active">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a href="transactions.html" class="nav-item">
+          <span class="nav-icon">💳</span> Transactions
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-details">
+            <div class="user-name"  id="userName">User</div>
+            <div class="user-email" id="userEmail">user@email.com</div>
+          </div>
+          <button class="btn-theme"  onclick="toggleTheme()" title="Toggle Theme">☀️</button>
+          <button class="btn-logout" onclick="handleLogout()" title="Logout">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Your financial overview</p>
+          </div>
+          <div class="month-filter">
+            <input type="month" id="monthFilter" onchange="loadDashboard()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Alerts -->
+      <div class="budget-alerts" id="budgetAlerts"></div>
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="card-label">Total Income</div>
+          <div class="card-amount income" id="totalIncome">₹0.00</div>
+          <div class="card-meta">This month</div>
+        </div>
+        <div class="summary-card">
+          <div class="card-label">Total Expense</div>
+          <div class="card-amount expense" id="totalExpense">₹0.00</div>
+          <div class="card-meta">This month</div>
+        </div>
+        <div class="summary-card">
+          <div class="card-label">Balance</div>
+          <div class="card-amount" id="totalBalance">₹0.00</div>
+          <div class="card-meta" id="transactionCount">0 transactions</div>
+        </div>
+      </div>
+
+      <!-- Budget Settings -->
+      <div class="budget-card">
+        <div class="section-header">
+          <div class="section-title">💰 Monthly Budget Limits</div>
+          <button class="btn-save-budget" onclick="saveBudgetLimits()">Save Budgets</button>
+        </div>
+        <div class="budget-grid" id="budgetGrid"></div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">Monthly Overview</div>
+          <div class="chart-wrapper">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Expense by Category</div>
+          <div class="chart-wrapper">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="recent-card">
+        <div class="section-header">
+          <div class="section-title">Recent Transactions</div>
+          <a href="transactions.html" class="section-link">View All →</a>
+        </div>
+        <div id="recentList">
+          <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3>No transactions yet</h3>
+            <p>Add your first transaction to get started</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>
